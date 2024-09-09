@@ -9,12 +9,17 @@
     margin: 10px;
     text-align: center; 
 }
+.hovered-img {
+    transform: scale(1.2); 
+    opacity: 0.5; 
+}
 
 #favorite-display {
     display: flex;
     flex-wrap: nowrap; 
     gap: 10px; 
     overflow-x: auto; 
+
 }
 
 #favorite-display .game-container {
@@ -26,5 +31,10 @@
 body {
     background-color: black;
     color: white;
+}
+
+#title {
+
+    text-align: center;
 }
 

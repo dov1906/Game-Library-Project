@@ -16,10 +16,10 @@ function addDisplayedImages(){
             const imgDisplay = document.getElementById('game-images-div')
             imgElement.className = "displayed-images"
             imgElement.src = element.thumbnail
-            // imgElement.addEventListener("mouseover", () => {
-            //     console.log(element.short_description)
-            // }
-        //)
+
+            imgElement.addEventListener("mouseover", () => imgElement.classList.add("hovered-img"))
+            imgElement.addEventListener("mouseout", () => imgElement.classList.remove("hovered-img"))
+        
             anchor.appendChild(imgElement)
             gameContainer.appendChild(anchor)
 
@@ -29,13 +29,14 @@ function addDisplayedImages(){
 
             const favoriteButton = document.createElement('button')
             favoriteButton.innerHTML = "add to favorite"
+            favoriteButton.style.background = "yellow"
             gameContainer.appendChild(favoriteButton)
             favoriteButton.addEventListener("click", () => {
 
                 fetch("http://localhost:3000/favorites")
                 .then(res => res.json())
                 .then(favorites => {
-                    const isInFavorites = favorites.some(item => { item.id === element.id })
+                    const isInFavorites = favorites.some(item => item.id === element.id )
                     if(isInFavorites === false){
                         fetch("http://localhost:3000/favorites", {
                             method: "POST",
@@ -48,10 +49,14 @@ function addDisplayedImages(){
                         .then(() => addFavoriteGame())
                     }
             })
-            imgDisplay.appendChild(gameContainer)
+            
 
 
         });
+
+        imgDisplay.appendChild(gameContainer)
+
+
     })
 }
     )}
@@ -78,10 +83,24 @@ function addFavoriteGame() {
             imgElement.src = element.thumbnail
             anchor.appendChild(imgElement)
 
+            imgElement.addEventListener("mouseover", () => imgElement.classList.add("hovered-img"))
+            imgElement.addEventListener("mouseout", () => imgElement.classList.remove("hovered-img"))
+
             gameContainer.appendChild(anchor)
             const gameTitle = document.createElement("h3")
             gameTitle.textContent = element.title
             gameContainer.appendChild(gameTitle)
+
+            const deleteButton = document.createElement("button")
+            deleteButton.innerHTML = "X"
+            deleteButton.style.color = "red"
+            deleteButton.addEventListener("click",() => {
+                fetch(`http://localhost:3000/favorites/${element.id}`, {
+                    method: "DELETE"
+                })
+                .then(() => addFavoriteGame())
+            } )
+            gameContainer.appendChild(deleteButton)
             favoritesDisplay.appendChild(gameContainer)
 
         })
